@@ -1,6 +1,7 @@
 const express = require("express");
 const z = require("zod");
 const { User } = require("../db");
+const { Account } = require("../db");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET || require("../config"); // Ensure secret is loaded
 const { authMiddleware } = require("../middleware");
@@ -25,7 +26,7 @@ const userRouter = express.Router();
 
 userRouter.post("/signup", async (req, res) => {
   const body = req.body;
-
+  console.log(body);
   // Validate request body against signupSchema
   const response = signupSchema.safeParse(body);
   if (!response.success) {
@@ -52,7 +53,12 @@ userRouter.post("/signup", async (req, res) => {
       lastName: body.lastName,
       password: body.password,
     });
-
+    //Create account and have a dummy balance inserted
+    const userId = newUser._id;
+    await Account.create({
+      userId,
+      balance: 1 + Math.random() * 10000,
+    });
     // Generate JWT token
     const token = jwt.sign({ userId: newUser._id }, JWT_SECRET, {
       expiresIn: "1h",
@@ -100,6 +106,9 @@ const updateBody = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
 });
+
+//Here also with the body we need to give the
+//Authorization token inside the Auth
 
 userRouter.put("/", authMiddleware, async (req, res) => {
   const { success } = updateBody.safeParse(req.body);
