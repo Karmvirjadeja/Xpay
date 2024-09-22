@@ -4,6 +4,8 @@ import { Heading } from "../components/Heading";
 import { InputBox } from "../components/InputBox";
 import { SubHeading } from "../components/SubHeading";
 import { useState } from "react";
+import axios from "axios";
+
 export const Signup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -44,7 +46,17 @@ export const Signup = () => {
             label={"Password"}
           />
           <div className="pt-4">
-            <Button label={"Sign up"} />
+            <Button
+              onClick={() => {
+                axios.post("http://localhost:3000/api/v1/user/signup", {
+                  userName,
+                  lastName,
+                  firstName,
+                  password,
+                });
+              }}
+              label={"Sign up"}
+            />
           </div>
           <BottomWarning
             label={"Already have an account?"}
