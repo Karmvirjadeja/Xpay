@@ -47,13 +47,18 @@ export const Signup = () => {
           />
           <div className="pt-4">
             <Button
-              onClick={() => {
-                axios.post("http://localhost:3000/api/v1/user/signup", {
-                  userName,
-                  lastName,
-                  firstName,
-                  password,
-                });
+              onClick={async () => {
+                const response = await axios.post(
+                  "http://localhost:3000/api/v1/users/signup",
+                  {
+                    userName,
+                    lastName,
+                    firstName,
+                    password,
+                  }
+                );
+
+                localStorage.setItem("token", response.data.token);
               }}
               label={"Sign up"}
             />
