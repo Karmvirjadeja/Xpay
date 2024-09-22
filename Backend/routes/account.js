@@ -26,7 +26,8 @@ accountRouter.post("/transfer", authMiddleware, async (req, res) => {
 
   session.startTransaction();
   const { amount, to } = req.body;
-
+  console.log(amount);
+  console.log(to);
   //Fetch the account from which money is to be transferred
   const fromAccount = await Account.findOne({ userId: req.userId }).session(
     session
