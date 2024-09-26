@@ -4,6 +4,7 @@ import { Heading } from "../components/Heading";
 import { InputBox } from "../components/InputBox";
 import { SubHeading } from "../components/SubHeading";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const Signup = () => {
@@ -11,6 +12,7 @@ export const Signup = () => {
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   return (
     <div className="bg-slate-300 h-screen flex justify-center">
       <div className="flex flex-col justify-center">
@@ -59,6 +61,7 @@ export const Signup = () => {
                 );
 
                 localStorage.setItem("token", response.data.token);
+                navigate("/dashboard");
               }}
               label={"Sign up"}
             />
